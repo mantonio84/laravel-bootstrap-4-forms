@@ -371,6 +371,8 @@ class FormService {
         $items = is_iterable($options) ? $options : [0 => 'Must be iterable'];
         return $this->_set('options', $items);
     }
+    
+ 
 
     /**
      * Create a checkbox input
@@ -748,7 +750,7 @@ class FormService {
     }
 
     /**
-     * Add custom attributes for a input
+     * Set custom attributes for a input
      *
      * @param mixed $attrName
      * @param mixed $attrValue
@@ -759,6 +761,66 @@ class FormService {
        return $this->_setAttrsField("attrs",$attrName,$attrValue);
     }
     
+    
+     /**
+     * Add a css class to input
+     *
+     * @param string $className     
+     * @return \mantonio84\Bootstrap4Forms\FormService
+     */
+    public function withClass(string $className): FormService {
+        $this->_builder->add_class("attrs",$className);
+        return $this;
+    }
+    
+    
+    /**
+     * Set custom attributes for wrapper div
+     *
+     * @param mixed $attrName
+     * @param mixed $attrValue
+     * @return \mantonio84\Bootstrap4Forms\FormService
+     */
+    public function attrsWrapper($attrName, $attrValue=null): FormService
+    {
+       return $this->_setAttrsField("attrsWrapper",$attrName,$attrValue);
+    }
+    
+    
+     /**
+     * Add a css class to wrapper div
+     *
+     * @param string $className     
+     * @return \mantonio84\Bootstrap4Forms\FormService
+     */
+    public function withClassOnWrapper(string $className): FormService {
+        $this->_builder->add_class("attrsWrapper",$className);
+        return $this;
+    }
+    
+     /**
+     * Set custom attributes for label
+     *
+     * @param mixed $attrName
+     * @param mixed $attrValue
+     * @return \mantonio84\Bootstrap4Forms\FormService
+     */
+    public function attrsLabel($attrName, $attrValue=null): FormService
+    {
+       return $this->_setAttrsField("attrsLabel",$attrName,$attrValue);
+    }
+    
+    
+     /**
+     * Add a css class to label
+     *
+     * @param string $className     
+     * @return \mantonio84\Bootstrap4Forms\FormService
+     */
+    public function withClassOnLabel(string $className): FormService {
+        $this->_builder->add_class("attrsLabel",$className);
+        return $this;
+    }
     
 
     /**

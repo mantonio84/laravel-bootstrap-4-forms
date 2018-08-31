@@ -97,7 +97,13 @@ class AttributesContainer implements \ArrayAccess {
     
     public function has(string $key){
         $key=strtolower(trim($key));
-        return array_key_exists($key,$this->data);
+        if (array_key_exists($key,$this->data)){
+            if ($this->suppressEmptyAttributes===true){
+                return (strlen(trim($this->data[$key]))>0);
+            }
+            return true;
+        }
+        return false;
     }
     
     public function render(){

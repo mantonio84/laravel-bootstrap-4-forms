@@ -65,6 +65,20 @@ class FormBuilder {
      * @var array
      */
     private $_attrs;
+    
+    /**
+     * Wrapper attributes
+     *
+     * @var array
+     */
+    private $_attrsWrapper;
+    
+    /**
+     *  Label attributes
+     *
+     * @var array
+     */
+    private $_attrsLabel;
 
     /**
      * Form control type
@@ -205,12 +219,18 @@ class FormBuilder {
      * @param mixed $value
      */
     public function set(string $attr, $value)
-    {
-        if ($attr!="attrs"){
-            $this->{'_' . $attr} = $value;
+    {                
+        if (starts_with($attr,"attrs")){
+           $this->{'_' . $attr}->mergeWith($value); 
         }else{
-             $this->_attrs->mergeWith($value);
+            $this->{'_' . $attr} = $value;
         }
+    }         
+    
+    public function add_class(string $attr, string $className){
+        if (starts_with($attr,"attrs")){
+            $this->{'_' . $attr}['class'].=$className;    
+        }        
     }    
 
     /**
@@ -559,13 +579,14 @@ class FormBuilder {
 
             $classStr = '';
             if($this->_FinlineForm) {
-                $classStr = ' class="sr-only"';
+                $classStr = 'sr-only';
             }else if (is_array($this->_FhorizontalForm)){
-                $classStr = ' class="'.$this->_FhorizontalForm['label'].'"';
+                $classStr = $this->_FhorizontalForm['label'];
             }
 
             $id = $this->_getId();
-            $result = '<label for="' . $id . '"'.$classStr.'>' . $this->_e($label) . '</label>';
+            $result = $this->_renderLabelOpenTag(["for" => $id, "class" => $classStr]). $this->_e($label) . '</label>';;
+            //$result = '<label for="' . $id . '"'.$classStr.'>' . $this->_e($label) . '</label>';
         }
 
         return $result;
@@ -630,12 +651,6 @@ class FormBuilder {
 
         if (isset($this->_attrs['class'])) {
             $props['class'] .= ' ' . $this->_attrs['class'];
-        }
-
-        $props['class'] = trim($props['class']);
-
-        if(!$props['class']) {
-            $props['class'] = null;
         }
 
         if (in_array($this->_type, ['radio', 'checkbox'])) {
@@ -791,10 +806,12 @@ class FormBuilder {
         $inline = $this->_checkInline ? ' form-check-inline' : '';
         $label  = $this->_e($this->_label);
         $id = $this->_getId();
-
+        $attrsOpen=clone $this->_attrsWrapper;
+        $attrsOpen['class']="form-check".$iline.$attrsOpen['class'];                
+        
+        $result='<div ' . $attrsOpen . '><input ' . $attrs . '>'. $this->_renderLabelOpenTag(["for" => $id, "class" => "form-check-label"]) . $label . '</label></div>';
         $this->_resetFlags();
-
-        return '<div class="form-check' . $inline . '"><input ' . $attrs . '><label class="form-check-label" for="'.$id.'">' . $label . '</label></div>';
+        return $result;
     }
 
     /**
@@ -810,18 +827,20 @@ class FormBuilder {
         $error = $this->_getValidationFieldMessage();
 
         $this->_resetFlags();
-
-        $formGroupOpen = '<div class="form-group ">';
+        
+        $attrsOpen=clone $this->_attrsWrapper;
+        $attrsOpen['class']="form-group ".$clsOpen['class'];
+        $formGroupOpen = '<div>';        
         $formGroupClose = '</div>';
 
         if($this->_FinlineForm) {
             $formGroupOpen = $formGroupClose = '';
         }else if (is_array($this->_FhorizontalForm)){
-            $formGroupOpen = '<div class="form-group row ">';
+            $attrsOpen['class']="form-group row ".$clsOpen['class'];
             $field='<div class="'.$this->_FhorizontalForm['fields'].'">'.$field;
             $formGroupClose = '</div></div>';
-        }
-
+        }        
+        $formGroupOpen=str_replace(">",$attrsOpen->render().">",$formGroupOpen);
         return $formGroupOpen . $label . $field . $help . $error . $formGroupClose;
     }
 
@@ -857,6 +876,10 @@ class FormBuilder {
         $this->_meta = [];
         $this->_attrs = new AttributesContainer();
         $this->_attrs->suppressEmptyAttributes=true;
+        $this->_attrsWrapper = new AttributesContainer();
+        $this->_attrsWrapper->suppressEmptyAttributes=true;
+        $this->_attrsLabel = new AttributesContainer();
+        $this->_attrsLabel->suppressEmptyAttributes=true;
         $this->_type = null;
         $this->_url = null;
         $this->_placeholder = null;
@@ -876,6 +899,7 @@ class FormBuilder {
         $this->_multiple = false;
     }
 
+
     /**
      * Reset form flags
      */
@@ -889,6 +913,12 @@ class FormBuilder {
         $this->_Fdata = null;
         $this->_FidPrefix = '';
         $this->_FhorizontalForm=false;
+    }
+    
+    private function _renderLabelOpenTag(array $attribs = []){         
+        $labelAttribs=clone $this->_attrsLabel;
+        if (!empty($attribs)) $labelAttribs->mergeWith($attribs)
+        return "<label ".$labelAttribs.">";
     }
 
 }
