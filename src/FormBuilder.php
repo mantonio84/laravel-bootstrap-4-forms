@@ -209,7 +209,7 @@ class FormBuilder {
         if ($attr!="attrs"){
             $this->{'_' . $attr} = $value;
         }else{
-            foreach ($value as $k => $v) $this->_attrs[$k]=$v; 
+             $this->_attrs->mergeWith($value);
         }
     }    
 

@@ -54,7 +54,10 @@ class AttributesContainer implements \ArrayAccess {
     public function set(string $key, string $value){
         $key=strtolower(trim($key));        
         if ($key=="class"){                      
-            $value=explode(" ",$value);                                                
+            $value=explode(" ",$value);        
+            $value=array_filter($value,function ($a){
+                return (strlen(trim($a))>0); 
+            });                                      
             $value=array_values(array_unique($value));                
             $value=implode(" ",$value);            
         }else if ($key=="style"){

@@ -756,14 +756,7 @@ class FormService {
      */
     public function attrs($attrName, $attrValue=null): FormService
     {
-        if (is_array($attrName)){
-            $this->_set("attrs",$attrName);        
-        }else if ((is_string($attrName)) and (is_string($attrValue))){
-            $a=array();
-            $a[$attrName]=$attrValue;
-            $this->_set("attrs",$a);
-        }
-        return $this;
+       return $this->_setAttrsField("attrs",$attrName,$attrValue);
     }
     
     
@@ -790,6 +783,18 @@ class FormService {
     {
         $this->_builder->set($attr, $value);
 
+        return $this;
+    }
+    
+    private function _setAttrsField($fieldName, $attrName, $attrValue){
+        
+        if (is_array($attrName)){
+            return $this->_set($fieldName,$attrName);        
+        }else if ((is_string($attrName)) and (is_string($attrValue))){
+            $a=array();
+            $a[$attrName]=$attrValue;
+            return $this->_set($fieldName,$a);
+        }
         return $this;
     }
 
