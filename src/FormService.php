@@ -363,16 +363,33 @@ class FormService {
     /**
      * Set options for a select field
      *
-     * @param array $options
+     * @param mixed $options
+     * @param string $valuesFieldName
+     * * @param string $labelsFieldName
      * @return \mantonio84\Bootstrap4Forms\FormService
      */
-    public function options(array $options = []): FormService
+    public function options($options = [], string $valuesFieldName = '', string $labelsFieldName=''): FormService
     {
-        $items = is_iterable($options) ? $options : [0 => 'Must be iterable'];
-        return $this->_set('options', $items);
-    }
-    
- 
+        if (!empty($options)){
+            $valuesFieldName=trim($valuesFieldName);
+            $labelsFieldName=trim($labelsFieldName);
+            if (($options instanceof \Illuminate\Database\Eloquent\Collection) and (!empty($valuesFieldName)) and (!empty($labelsFieldName))){
+                $items=array();
+                foreach ($collection as $md){
+                    $k=$md->{$valuesFieldName};
+                    $v=$md->{$labelsFieldName};
+                    $items[$k]=$v;
+                }
+            }else if ((is_iterable($options)) and (!($options instanceof \Illuminate\Database\Eloquent\Collection))){
+                $items=$options;   
+            }
+            if (isset($items)){
+                return $this->_set('options', $items);
+            }else{
+                throw new \InvalidArgumentException("Invalid options given!");            
+            }
+        }
+    }    
 
     /**
      * Create a checkbox input
