@@ -167,9 +167,10 @@ class FormService {
      */
     public function fill($data): FormService
     {
-
-        if (method_exists($data, 'toArray')) {
-            $data = $data->toArray();
+        if (is_object($data)){                    
+            if (method_exists($data, 'toArray')) {
+                $data = $data->toArray();
+            }        
         }
 
         if (!is_array($data)) {
