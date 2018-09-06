@@ -917,7 +917,7 @@ class FormBuilder {
     
     private function _renderLabelOpenTag(array $attribs = []){         
         $labelAttribs=clone $this->_attrsLabel;
-        if (!empty($attribs)) $labelAttribs->mergeWith($attribs)
+        if (!empty($attribs)) $labelAttribs->mergeWith($attribs);
         return "<label ".$labelAttribs.">";
     }
 
