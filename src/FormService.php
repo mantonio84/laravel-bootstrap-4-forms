@@ -432,6 +432,21 @@ class FormService {
     {
         return $this->type('textarea')->name($name)->value($default)->label($label);
     }
+    
+    
+     /**
+     * Sets autocomplete flag
+     *     
+     * @param bool $value
+     * @return \mantonio84\Bootstrap4Forms\FormService
+     */
+    public function autocomplete($value=true){
+        if ($value===true){
+            return $this->_set("autocomplete","on");
+        }else{
+            return $this->_set("autocomplete","off");
+        }
+    }
 
     /**
      * Set a label

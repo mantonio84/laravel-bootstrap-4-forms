@@ -135,6 +135,15 @@ class FormBuilder {
      * @var boolean
      */
     private $_required;
+    
+    
+    /**
+     * autocomplete flag
+     *
+     * @var boolean
+     */
+    private $_autocomplete="off";
+    
 
     /**
      * Input id
@@ -605,7 +614,7 @@ class FormBuilder {
         $props->suppressEmptyAttributes=true;        
         $props['type'] = $this->_type;
         $props['name'] = $this->_name;
-        $props['autocomplete'] = $props['name'];
+        $props['autocomplete'] = $this->_autocomplete;
         $props['id'] = $this->_getId();
         
 
@@ -829,18 +838,18 @@ class FormBuilder {
         $this->_resetFlags();
         
         $attrsOpen=clone $this->_attrsWrapper;
-        $attrsOpen['class']="form-group ".$clsOpen['class'];
+        $attrsOpen['class']="form-group ".$attrsOpen['class'];
         $formGroupOpen = '<div>';        
         $formGroupClose = '</div>';
 
         if($this->_FinlineForm) {
             $formGroupOpen = $formGroupClose = '';
         }else if (is_array($this->_FhorizontalForm)){
-            $attrsOpen['class']="form-group row ".$clsOpen['class'];
+            $attrsOpen['class']="form-group row ".$attrsOpen['class'];
             $field='<div class="'.$this->_FhorizontalForm['fields'].'">'.$field;
             $formGroupClose = '</div></div>';
         }        
-        $formGroupOpen=str_replace(">",$attrsOpen->render().">",$formGroupOpen);
+        $formGroupOpen=str_replace(">"," ".$attrsOpen->render().">",$formGroupOpen);
         return $formGroupOpen . $label . $field . $help . $error . $formGroupClose;
     }
 

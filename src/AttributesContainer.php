@@ -51,7 +51,7 @@ class AttributesContainer implements \ArrayAccess {
         return $this->data;
     }
     
-    public function set(string $key, string $value){
+    public function set(string $key, $value){
         $key=strtolower(trim($key));        
         if ($key=="class"){                      
             $value=explode(" ",$value);        
