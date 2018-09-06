@@ -238,7 +238,7 @@ class FormBuilder {
     
     public function add_class(string $attr, string $className){
         if (starts_with($attr,"attrs")){
-            $this->{'_' . $attr}['class'].=$className;    
+            $this->{'_' . $attr}['class'].=$className;                
         }        
     }    
 
@@ -834,10 +834,10 @@ class FormBuilder {
         $label = $this->_getLabel();
         $help = $this->_getHelpText();
         $error = $this->_getValidationFieldMessage();
-
-        $this->_resetFlags();
+        
         
         $attrsOpen=clone $this->_attrsWrapper;
+        $this->_resetFlags();
         $attrsOpen['class']="form-group ".$attrsOpen['class'];
         $formGroupOpen = '<div>';        
         $formGroupClose = '</div>';
