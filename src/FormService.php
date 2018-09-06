@@ -390,6 +390,7 @@ class FormService {
                 throw new \InvalidArgumentException("Invalid options given!");            
             }
         }
+        return $this;
     }    
 
     /**
