@@ -644,8 +644,8 @@ class FormBuilder {
 
         $formControlClass = $this->_type == 'file' ? 'form-control-file' : 'form-control';
 
-        if (!$props['class'] && !in_array('class-form-control', $ignore)) {
-            $props['class'] = $formControlClass;
+        if (!in_array('class-form-control', $ignore)) {
+            $props['class'] = $formControlClass." ".$props['class'];
         }
 
         if ($this->_size) {
