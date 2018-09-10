@@ -89,9 +89,10 @@ class AttributesContainer implements \ArrayAccess {
     }
     
     public function remove(string $key){
-        $key=strtolower(trim($key));
-        if ($this->has($name)){
-            unset($this->data[$name]);
+
+        $key=strtolower(trim($key));        
+        if ($this->has($key)){
+            unset($this->data[$key]);
         }   
     }
     
