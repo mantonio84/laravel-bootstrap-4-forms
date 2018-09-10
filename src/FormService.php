@@ -795,6 +795,26 @@ class FormService {
        return $this->_setAttrsField("attrs",$attrName,$attrValue);
     }
     
+    /**
+     * Set custom data attribute for a input
+     *
+     * @param mixed $prefix
+     * @param mixed $value
+     * @return \mantonio84\Bootstrap4Forms\FormService
+     */
+    
+    public function data($prefix, $value=null): FormService
+    {
+         if (is_array($prefix)){
+            $a=array();
+            foreach ($prefix as $k => $v) $a["data-".$k]=$v;
+            return $this->attrs($a);
+        }else if ((is_string($prefix)) and (is_string($value))){
+            $a=array();
+            $a["data-".$prefix]=$value;            
+            return $this->attrs($a);
+        }   
+    }
     
      /**
      * Add a css class to input
