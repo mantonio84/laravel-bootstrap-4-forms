@@ -629,20 +629,29 @@ class FormBuilder {
         if ($this->_help) {
             $props['aria-describedby'] = $this->_getIdHelp();
         }
-
+        
+        
+        
         switch($this->_type) {
+            case 'anchor':
+            case 'button':
+            case 'reset':
+            case 'submit':
+            case 'reset':
+                $formControlClass="";
+                break;
             case 'file':
                 $formControlClass = 'form-control-file';
                 break;
             case 'range':
-            $formControlClass = 'form-control-range';
+                $formControlClass = 'form-control-range';
                 break;
             default:
                 $formControlClass = 'form-control';
                 break;
         }
 
-        $formControlClass = $this->_type == 'file' ? 'form-control-file' : 'form-control';
+        
 
         if (!in_array('class-form-control', $ignore)) {
             $props['class'] = $formControlClass." ".$props['class'];
