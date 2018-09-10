@@ -321,6 +321,19 @@ class FormService {
     {
         return $this->type('text')->name($name)->label($label)->value($default);
     }
+    
+     /**
+     * Create a number input
+     *
+     * @param string $name
+     * @param string $label
+     * @param string $default
+     * @return \mantonio84\Bootstrap4Forms\FormService
+     */
+    public function number(string $name = null, $label = null, string $default = null): FormService
+    {
+        return $this->type('number')->name($name)->label($label)->value($default);
+    }
 
     /**
      * Create a range input
